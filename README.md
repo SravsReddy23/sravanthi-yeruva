@@ -1,2 +1,2 @@
 # sravanthi-yeruva
-This is my first Rwpository
+This is my first Repository
