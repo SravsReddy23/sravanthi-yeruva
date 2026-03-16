@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>Calculator</title>
+   <style>
+   * {
+       margin: 0;
+       padding: 0;
+       box-sizing: border-box;
+   }
+   body {
+       font-family: 'Arial', sans-serif;
+       background: white;
+   }
+   #calc {
+       width: 100%;
+       height: 100vh;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+   }
+   #content {
+       background: black;
+       padding: 30px;
+       border-radius: 20px;
+       box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+       max-width: 350px;
+       width: 90%;
+   }
+   #output {
+       display: flex;
+       justify-content: flex-end;
+       margin-bottom: 20px;
+   }
+   #res {
+       width: 100%;
+       height: 70px;
+       border: none;
+       outline: none;
+       background: black;
+       color: #ecf0f1;
+       font-size: 28px;
+       text-align: right;
+       padding: 0 20px;
+       border-radius: 12px;
+       font-weight: 300;
+   }
+   .btn {
+       display: grid;
+       grid-template-columns: repeat(4, 1fr);
+       gap: 15px;
+   }
+   .btn input {
+       border: none;
+       outline: none;
+       height: 60px;
+       border-radius: 12px;
+       font-size: 18px;
+       font-weight: bold;
+       cursor: pointer;
+       transition: all 0.2s ease;
+   }
+   .btn input:hover {
+       transform: translateY(-2px);
+       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+   }
+   .btn input:active {
+       transform: translateY(0);
+   }
+   .number, .zero {
+       background: blue;
+       color: white;
+   }
+   .number:hover, .zero:hover {
+       background: #2980b9;
+   }
+   .operator {
+       background: pink;
+       color: black;
+   }
+   .operator:hover {
+       background: #c0392b;
+   }
+
+   .Solve{
+       background: pink;
+       color: black;
+   }
+   .Solve:hover {
+       background: #c0392b;
+   }
+  .equals {
+       background: yellow;
+       color: balck;
+       grid-column: span 2;
+   }
+   .equals:hover {
+       background:  red;
+   }
+
+   .zero {
+       grid-column: span 1;
+   }
+   #clear, #backspace {
+       background: pink;
+       color: black;
+   }
+   #clear:hover, #backspace:hover {
+       background: #c0392b;
+   }
+   @media (max-width: 480px) {
+       #content {
+           padding: 20px;
+           margin: 20px;
+       }
+        .btn input {
+           height: 50px;
+           font-size: 16px;
+       }
+           #res {
+           font-size: 50px;
+           height: 60px;
+       }
+   }
+   </style>
+</head>
+<body>
+   <div id="calc">
+      <div id="content">
+         <div id="output">
+            <input type="text" id="res" readonly>
+         </div>
+         <div class="btn">
+            <input type="button" value="C" id="clear" onclick="Clear()">
+            <input type="button" value="⌫" id="backspace" onclick="Back()">
+            <input type="button" value="%" onclick="Solve('%')">
+            <input type="button" value="÷" onclick="Solve('/')">
+             <input type="button" value="7" class="number" onclick="Solve('7')">
+            <input type="button" value="8" class="number" onclick="Solve('8')">
+            <input type="button" value="9" class="number" onclick="Solve('9')">
+            <input type="button" value="×" class="operator" onclick="Solve('*')">
+	 <input type="button" value="4" class="number" onclick="Solve('4')">
+            <input type="button" value="5" class="number" onclick="Solve('5')">
+            <input type="button" value="6" class="number" onclick="Solve('6')">
+            <input type="button" value="-" class="operator" onclick="Solve('-')">
+            <input type="button" value="1" class="number" onclick="Solve('1')">
+            <input type="button" value="2" class="number" onclick="Solve('2')">
+            <input type="button" value="3" class="number" onclick="Solve('3')">
+            <input type="button" value="+" class="operator" onclick="Solve('+')">
+             <input type="button" value="0" class="zero number" onclick="Solve('0')">
+            <input type="button" value="." onclick="Solve('.')">
+            <input type="button" value="=" class="equals" onclick="Result()">
+         </div>      </div>   </div>   <script>
+   let display = document.getElementById('res');
+   function Solve(val) {
+       display.value += val;
+   }
+   function Result() {
+       try {
+           let expression = display.value
+               .replace(/×/g, '*')
+               .replace(/÷/g, '/');
+                      let result = eval(expression);
+                  if (result.toString().includes('e')) {
+               result = parseFloat(result).toLocaleString();
+           }
+           
+           display.value = result;
+       } catch (error) {
+           display.value = 'Error';
+       }
+   }
+   function Clear() {
+       display.value = '';
+   }
+   function Back() {
+       display.value = display.value.slice(0, -1);
+   }
+
+      document.addEventListener('keydown', function(event) {
+       const key = event.key;
+       
+              if ('0123456789'.includes(key)) {
+           Solve(key);
+       } else if (key === '.') {
+           Solve('.');
+       } else if (key === '+') {
+           Solve('+');
+       } else if (key === '-') {
+           Solve('-');
+       } else if (key === '*') {
+           Solve('*');
+       } else if (key === '/') {
+           Solve('/');
+       } else if (key === '%') {
+           Solve('%');
+       } else if (key === 'Enter' || key === '=') {
+           Result();
+       } else if (key === 'Backspace') {
+           Back();
+       } else if (key.toLowerCase() === 'c' || key.toLowerCase() === 'escape') {
+           Clear();
+       }
+   });
+
+      document.addEventListener('touchstart', function(event) {
+       if (event.touches.length > 1) {
+           event.preventDefault();
+       }
+   });
+   let lastCalcTime = 0;
+      display.addEventListener('dblclick', function() {
+       Clear();
+   });
+   </script></body></html>
